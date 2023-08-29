@@ -1,29 +1,26 @@
-#pragma once
-
-#include <stdint.h>
-
+#include "os.h"
 #include "ux.h"
+#include "os_io_seproxyhal.h"
 
-#include "io.h"
-#include "types.h"
-#include "constants.h"
+#ifndef _GLOBALS_H_
+#define _GLOBALS_H_
 
-/**
- * Global buffer for interactions between SE and MCU.
- */
-extern uint8_t G_io_seproxyhal_spi_buffer[IO_SEPROXYHAL_BUFFER_SIZE_B];
+#define P1_CONFIRM 0x01
+#define P1_NON_CONFIRM 0x00
 
-/**
- * Global structure to perform asynchronous UX aside IO operations.
- */
-extern ux_state_t G_ux;
+#define FULL_ADDRESS_LENGTH 60
+#define BIP32_PATH 5
 
-/**
- * Global structure with the parameters to exchange with the BOLOS UX application.
- */
-extern bolos_ux_params_t G_ux_params;
+// display stepped screens
+extern unsigned int ux_step;
+extern unsigned int ux_step_count;
 
-/**
- * Global context for user requests.
- */
-extern global_ctx_t G_context;
+typedef struct internalStorage_t {
+    unsigned char dummy_setting_1;
+    unsigned char dummy_setting_2;
+    uint8_t initialized;
+} internalStorage_t;
+
+extern const internalStorage_t N_storage_real;
+#define N_storage (*(volatile internalStorage_t*) PIC(&N_storage_real))
+#endif
